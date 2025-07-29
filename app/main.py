@@ -1,7 +1,9 @@
 from fastapi import FastAPI
+from app.auth import auth_routes
+from app.database import Base, engine
 
 app = FastAPI()
 
-@app.get("/")
-def read_root():
-    return {"message": "Sistema de Gestión de Proyectos 🚀"}
+Base.metadata.create_all(bind=engine)
+
+app.include_router(auth_routes.router)

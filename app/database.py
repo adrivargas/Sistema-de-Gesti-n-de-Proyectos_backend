@@ -1,17 +1,8 @@
 from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, declarative_base
 
-# Para SQLite (más simple para desarrollo rápido)
-SQLALCHEMY_DATABASE_URL = "sqlite:///./test.db"
+DATABASE_URL = "postgresql://postgres:pass@localhost:5432/sistema_gestion_proyectos"
 
-# Para PostgreSQL (descomenta y configura si quieres usar postgres)
-# SQLALCHEMY_DATABASE_URL = "postgresql://user:password@localhost/dbname"
-
-engine = create_engine(
-    SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False}  # Sólo para SQLite
-)
-
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-
+engine = create_engine(DATABASE_URL)
+SessionLocal = sessionmaker(bind=engine, autoflush=False)
 Base = declarative_base()
