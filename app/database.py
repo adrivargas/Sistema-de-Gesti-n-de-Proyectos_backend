@@ -6,3 +6,10 @@ DATABASE_URL = "postgresql://postgres:pass@localhost:5432/sistema_gestion_proyec
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(bind=engine, autoflush=False)
 Base = declarative_base()
+
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()

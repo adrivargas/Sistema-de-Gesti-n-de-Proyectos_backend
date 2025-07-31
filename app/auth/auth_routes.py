@@ -8,7 +8,7 @@ from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from fastapi import status
 
 router = APIRouter(prefix="/auth", tags=["Auth"])
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/login")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
 
 def get_db():
     db = SessionLocal()
@@ -40,7 +40,7 @@ def login(user: UserLogin, db: Session = Depends(get_db)):
     
     token = create_access_token({"sub": db_user.email})
     return {"access_token": token, "token_type": "bearer"}
-
+ 
 @router.get("/me", response_model=UserOut)
 def get_me(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
     payload = decode_access_token(token)
