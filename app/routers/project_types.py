@@ -7,7 +7,7 @@ from app.schemas.ProjectsType import ProjectType as ProjectTypeSchema, ProjectTy
 
 router = APIRouter(prefix="/project-types", tags=["Project Types"])
 
-@router.post("/", response_model=ProjectTypeSchema)
+@router.post("", response_model=ProjectTypeSchema)
 def create_project_type(data: ProjectTypeCreate, db: Session = Depends(get_db)):
     pt = ProjectTypeModel(**data.dict())
     db.add(pt)
@@ -15,7 +15,7 @@ def create_project_type(data: ProjectTypeCreate, db: Session = Depends(get_db)):
     db.refresh(pt)
     return pt
 
-@router.get("/", response_model=list[ProjectTypeSchema])
+@router.get("", response_model=list[ProjectTypeSchema])
 def get_all(db: Session = Depends(get_db)):
     return db.query(ProjectTypeModel).all()
 

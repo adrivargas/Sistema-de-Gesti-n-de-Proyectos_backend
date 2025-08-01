@@ -7,7 +7,7 @@ from app.schemas import projects as schemas
 
 router = APIRouter(prefix="/projects", tags=["Projects"])
 
-@router.post("/", response_model=schemas.Project)
+@router.post("", response_model=schemas.Project)
 def create_project(data: schemas.ProjectCreate, db: Session = Depends(get_db)):
     proj = models.Project(**data.dict())
     db.add(proj)
@@ -15,10 +15,9 @@ def create_project(data: schemas.ProjectCreate, db: Session = Depends(get_db)):
     db.refresh(proj)
     return proj
 
-@router.get("/", response_model=list[schemas.Project])
+@router.get("", response_model=list[schemas.Project])
 def get_all(db: Session = Depends(get_db)):
     return db.query(models.Project).all()
-
 
 @router.get("/{project_id}", response_model=schemas.Project)
 def get_project(project_id: int, db: Session = Depends(get_db)):
@@ -46,4 +45,3 @@ def delete_project(project_id: int, db: Session = Depends(get_db)):
     db.delete(project)
     db.commit()
     return Response(status_code=204)
-
