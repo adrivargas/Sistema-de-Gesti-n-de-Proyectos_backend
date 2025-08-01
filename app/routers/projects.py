@@ -19,9 +19,6 @@ def create_project(data: schemas.ProjectCreate, db: Session = Depends(get_db)):
 def get_all(db: Session = Depends(get_db)):
     return db.query(models.Project).all()
 
-@router.get("/", response_model=list[schemas.Project])
-def get_all(db: Session = Depends(get_db)):
-    return db.query(models.Project).all()
 
 @router.get("/{project_id}", response_model=schemas.Project)
 def get_project(project_id: int, db: Session = Depends(get_db)):
