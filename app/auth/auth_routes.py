@@ -21,11 +21,15 @@ def get_db():
 def register(user: UserCreate, db: Session = Depends(get_db)):
     if db.query(User).filter(User.email == user.email).first():
         raise HTTPException(status_code=400, detail="Email ya registrado")
+    existing_admin = db.query(User).filter(User.role == "admin").first()
     
+    user_role = "admin" if existing_admin is None else "user"
+
     new_user = User(
         username=user.username,
         email=user.email,
-        password_hash=hash_password(user.password)
+        password_hash=hash_password(user.password),
+        role=user_role
     )
     db.add(new_user)
     db.commit()
